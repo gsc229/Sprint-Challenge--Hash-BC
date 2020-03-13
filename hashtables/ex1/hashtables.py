@@ -1,5 +1,3 @@
-
-
 # '''
 # Linked List hash table key/value pair
 # '''
@@ -45,7 +43,7 @@ def hash_table_insert(hash_table, key, value):
         new_pair.next = hash_table.storage[index]
         hash_table.storage[index] = new_pair
 
-
+    
 def hash_table_remove(hash_table, key):
     index = hash(key, len(hash_table.storage))
 

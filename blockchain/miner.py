@@ -1,12 +1,12 @@
 import hashlib
 import requests
-
+import json
 import sys
 
 from uuid import uuid4
 
 from timeit import default_timer as timer
-
+import time
 import random
 
 
@@ -19,12 +19,16 @@ def proof_of_work(last_proof):
     - p is the previous proof, and p' is the new proof
     - Use the same method to generate SHA-256 hashes as the examples in class
     """
-
+    print(f"last_proof: {last_proof}")
     start = timer()
 
     print("Searching for next proof")
     proof = 0
     #  TODO: Your code here
+    while valid_proof(last_proof, proof) is False:
+        proof  += 1
+    end_time = time.time()
+    print(f"TIME: {end_time - start}")
 
     print("Proof found: " + str(proof) + " in " + str(timer() - start))
     return proof
@@ -38,9 +42,24 @@ def valid_proof(last_hash, proof):
 
     IE:  last_hash: ...AE9123456, new hash 123456E88...
     """
-
+    print(f"last_hash: {last_hash}")
     # TODO: Your code here!
-    pass
+    guess = f'{last_hash}{proof}'
+    print(f"guess: {guess}")
+    #check_guess = hashlib.sha256(guess.encode()).hexdigest()
+    check_guess = hash(guess)
+    print(f"check_guess: {check_guess}")
+    last_six = json.dumps(last_hash)[-6:]
+    print(f"last_six: {last_six}")
+    check_guess_str = json.dumps(check_guess)
+    print(f"cg_fs: {check_guess_str[:6]}")
+    if check_guess_str[:6] == last_six:
+        
+        print(f"sending combination... block_string: {last_hash} + proof: {proof}  = {check_guess}")
+        
+        return check_guess
+    else:
+        return False
 
 
 if __name__ == '__main__':
@@ -76,5 +95,6 @@ if __name__ == '__main__':
         if data.get('message') == 'New Block Forged':
             coins_mined += 1
             print("Total coins mined: " + str(coins_mined))
+            break
         else:
             print(data.get('message'))
