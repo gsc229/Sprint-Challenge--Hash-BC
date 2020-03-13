@@ -14,15 +14,30 @@ def get_indices_of_item_weights(weights, length, limit):
     
     """
     for i in range(0, length):
-        hash_table_insert(ht, i, weights[i])
-        
+        hash_table_insert(ht, weights[i], i)      
     
-    print(hash_table_retrieve(ht,0))
-    print(hash_table_retrieve(ht,1))
-    print(hash_table_retrieve(ht,2))
-       
+    for i in range(0, length):
+        difference = limit - weights[i]
+        instance = hash_table_retrieve(ht, weights[i])
+        #print(first)
+        find_difference = hash_table_retrieve(ht, difference)
+        if find_difference:
+            
+            if find_difference > instance:
+                print([find_difference, i])
+                return [find_difference, i]
+            elif find_difference < instance:
+                print([i, find_difference])
+                return [i, find_difference]
+            else:
+                print([i, find_difference])
+                return [find_difference, i]
+                
+        
+        
 
-    return None
+    
+    
 
 
 def print_answer(answer):
@@ -32,4 +47,7 @@ def print_answer(answer):
         print("None")
 
 
-get_indices_of_item_weights([9,1,4], 3, 10)
+get_indices_of_item_weights([9], 1, 9) #1
+get_indices_of_item_weights([4,4], 2, 8) #2
+get_indices_of_item_weights([ 4, 6, 10, 15, 16 ], 5, 10) #3
+get_indices_of_item_weights([12, 6, 7, 14, 19, 3, 0, 25, 40], 9, 7) #4
