@@ -21,8 +21,8 @@ def get_indices_of_item_weights(weights, length, limit):
         instance = hash_table_retrieve(ht, weights[i])
         #print(first)
         find_difference = hash_table_retrieve(ht, difference)
-        if find_difference:
-            
+        
+        if find_difference:            
             if find_difference > instance:
                 print([find_difference, i])
                 return [find_difference, i]
@@ -31,15 +31,9 @@ def get_indices_of_item_weights(weights, length, limit):
                 return [i, find_difference]
             else:
                 print([i, find_difference])
-                return [find_difference, i]
-                
+                return [find_difference, i]            
         
         
-
-    
-    
-
-
 def print_answer(answer):
     if answer is not None:
         print(str(answer[0] + " " + answer[1]))

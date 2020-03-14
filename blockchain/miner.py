@@ -24,9 +24,12 @@ def proof_of_work(last_proof):
 
     print("Searching for next proof")
     proof = 0
+    count = 0
     #  TODO: Your code here
     while valid_proof(last_proof, proof) is False:
-        proof  += 1
+        proof += 1
+        count += 1
+        
     end_time = time.time()
     print(f"TIME: {end_time - start}")
 
@@ -42,22 +45,27 @@ def valid_proof(last_hash, proof):
 
     IE:  last_hash: ...AE9123456, new hash 123456E88...
     """
-    print(f"last_hash: {last_hash}")
+    #print(f"last_hash: {last_hash}")
     # TODO: Your code here!
-    guess = f'{last_hash}{proof}'
-    print(f"guess: {guess}")
-    #check_guess = hashlib.sha256(guess.encode()).hexdigest()
-    check_guess = hash(guess)
-    print(f"check_guess: {check_guess}")
-    last_six = json.dumps(last_hash)[-6:]
-    print(f"last_six: {last_six}")
-    check_guess_str = json.dumps(check_guess)
-    print(f"cg_fs: {check_guess_str[:6]}")
-    if check_guess_str[:6] == last_six:
+    guess = f'{proof}'
+    #print(f"guess: {guess}")
+    last_hash_str = f'{last_hash}'
+    hash_guess = hashlib.sha256(guess.encode()).hexdigest()
+    prev_hash = hashlib.sha256(last_hash_str.encode()).hexdigest()
+    #hash_guess = hash(guess)
+    #print(f"hash_guess: {hash_guess}")
+
+    last_six = prev_hash[-6:]
+    #print(f"last_six: {last_six}")    
+    
+    
+    #print(f"hg_fs: {hash_guess[:6]}\n")
+
+    if hash_guess[:6] == last_six:
         
-        print(f"sending combination... block_string: {last_hash} + proof: {proof}  = {check_guess}")
+        print(f"sending combination... block_string: {last_hash} + proof: {proof}  = {hash_guess}")
         
-        return check_guess
+        return hash_guess
     else:
         return False
 
